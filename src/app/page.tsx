@@ -1,13 +1,11 @@
 'use client';
 
 import { useLocale } from '@/components/LocaleProvider';
-import ProductCard from '@/components/ProductCard';
-import { Product } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Shield, Globe, Gem, Sparkles } from 'lucide-react';
 
-const categoryImages: { key: string; gradient: string }[] = [
+const categoryList: { key: string; gradient: string }[] = [
   { key: 'sapphire', gradient: 'from-blue-400 to-blue-600' },
   { key: 'ruby', gradient: 'from-red-400 to-red-600' },
   { key: 'emerald', gradient: 'from-emerald-400 to-emerald-600' },
@@ -28,17 +26,17 @@ interface HeroSettings {
 
 export default function Home() {
   const { locale, t } = useLocale();
-  const [products, setProducts] = useState<Product[]>([]);
   const [hero, setHero] = useState<HeroSettings | null>(null);
+  const [categoryImages, setCategoryImages] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    fetch('/api/products').then((r) => r.json()).then(setProducts);
     fetch('/api/settings')
       .then((r) => r.json())
-      .then((data) => { if (data.hero) setHero(data.hero); });
+      .then((data) => {
+        if (data.hero) setHero(data.hero);
+        if (data.categoryImages) setCategoryImages(data.categoryImages);
+      });
   }, []);
-
-  const featured = products.filter((p) => p.featured).slice(0, 6);
 
   const heroTitle = hero
     ? (locale === 'zh' ? hero.titleZh || t('home.hero.title') : hero.titleEn || t('home.hero.title'))
@@ -118,24 +116,6 @@ export default function Home() {
         )}
       </section>
 
-      {/* Featured */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-light text-gray-800 mb-2">{t('home.featured.title')}</h2>
-            <p className="text-gray-400 text-sm">{t('home.featured.subtitle')}</p>
-          </div>
-          <Link href="/shop" className="text-amber-700 text-sm flex items-center gap-1 hover:gap-2 transition-all">
-            {t('home.featured.viewAll')} <ArrowRight size={14} />
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {featured.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
-
       {/* Categories */}
       <section className="bg-stone-50 py-20">
         <div className="max-w-7xl mx-auto px-6">
@@ -144,13 +124,21 @@ export default function Home() {
           </h2>
           <p className="text-gray-400 text-sm text-center mb-10">{t('home.categories.subtitle')}</p>
           <div className="grid grid-cols-4 md:grid-cols-8 gap-4">
-            {categoryImages.map((cat) => (
+            {categoryList.map((cat) => (
               <Link
                 key={cat.key}
                 href={`/shop?category=${cat.key}`}
                 className="flex flex-col items-center gap-2 group"
               >
-                <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${cat.gradient} shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300`} />
+                {categoryImages[cat.key] ? (
+                  <img
+                    src={categoryImages[cat.key]}
+                    alt={cat.key}
+                    className="w-16 h-16 rounded-full object-cover shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300"
+                  />
+                ) : (
+                  <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${cat.gradient} shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300`} />
+                )}
                 <span className="text-xs text-gray-500 group-hover:text-amber-700 transition-colors">
                   {t(`shop.categories.${cat.key}`)}
                 </span>

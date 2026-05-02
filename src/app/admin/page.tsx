@@ -36,6 +36,17 @@ const emptyProduct: Omit<Product, 'id' | 'createdAt'> = {
   isRare: false,
 };
 
+const categoryList = [
+  { key: 'sapphire', label: '蓝宝石' },
+  { key: 'ruby', label: '红宝石' },
+  { key: 'emerald', label: '祖母绿' },
+  { key: 'tanzanite', label: '坦桑石' },
+  { key: 'tourmaline', label: '碧玺' },
+  { key: 'spinel', label: '尖晶石' },
+  { key: 'garnet', label: '石榴石' },
+  { key: 'topaz', label: '托帕石' },
+];
+
 interface SiteSettings {
   hero: {
     bannerImage: string;
@@ -60,6 +71,7 @@ interface SiteSettings {
     instagram: string;
     weibo: string;
   };
+  categoryImages: Record<string, string>;
 }
 
 const defaultSettings: SiteSettings = {
@@ -75,6 +87,7 @@ const defaultSettings: SiteSettings = {
     ],
   },
   contact: { email: '', phone: '', addressZh: '', addressEn: '', wechat: '', wechatQR: '', instagram: '', weibo: '' },
+  categoryImages: {},
 };
 
 export default function Admin() {
@@ -112,6 +125,7 @@ export default function Admin() {
           stats: data.about?.stats ?? defaultSettings.about.stats,
         },
         contact: { ...defaultSettings.contact, ...data.contact },
+        categoryImages: data.categoryImages ?? {},
       });
     });
   };
@@ -553,6 +567,44 @@ export default function Admin() {
                       className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400" />
                   </div>
                 </div>
+              </div>
+            </section>
+
+            {/* Category Images */}
+            <section>
+              <h2 className="text-base font-medium text-gray-700 mb-5 pb-2 border-b border-gray-100">
+                💎 {locale === 'zh' ? '首页分类图片' : 'Category Photos'}
+              </h2>
+              <p className="text-xs text-gray-400 mb-4">{locale === 'zh' ? '上传后替换渐变色圆形，建议正方形图片' : 'Replaces gradient circles. Square images recommended.'}</p>
+              <div className="grid grid-cols-4 gap-4">
+                {categoryList.map((cat) => {
+                  const img = settings.categoryImages[cat.key];
+                  return (
+                    <div key={cat.key} className="flex flex-col items-center gap-2">
+                      {img ? (
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden border border-gray-200">
+                          <img src={img} alt={cat.label} className="w-full h-full object-cover" />
+                          <button
+                            onClick={() => setSettings({ ...settings, categoryImages: { ...settings.categoryImages, [cat.key]: '' } })}
+                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center"
+                          >
+                            <X size={8} />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="w-16 h-16 rounded-full border-2 border-dashed border-gray-200 hover:border-amber-400 flex flex-col items-center justify-center cursor-pointer transition-colors">
+                          <Upload size={14} className="text-gray-300" />
+                          <input type="file" accept="image/*" className="hidden" onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) uploadImage(file, () => {}, (url) =>
+                              setSettings({ ...settings, categoryImages: { ...settings.categoryImages, [cat.key]: url } }));
+                          }} />
+                        </label>
+                      )}
+                      <span className="text-xs text-gray-500">{cat.label}</span>
+                    </div>
+                  );
+                })}
               </div>
             </section>
 
