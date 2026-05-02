@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "bannerImage": "",
+    "titleZh": "发现世界珍稀宝石",
+    "titleEn": "Discover Rare Gemstones",
+    "subtitleZh": "每一颗宝石都是大自然的艺术品，我们为您精选来自世界各地的稀有珍贵宝石",
+    "subtitleEn": "Every gemstone is a masterpiece of nature. We curate the finest rare and precious gems from around the world."
+  },
+  "about": {
+    "profileImage": "",
+    "storyZh": [
+      "我们是一家专注于稀有宝石的精品商店，致力于为收藏家和珠宝爱好者提供世界上最美丽、最珍贵的天然宝石。",
+      "我们的团队由资深宝石学家和珠宝专家组成，每一颗宝石都经过严格的筛选和鉴定，确保品质卓越。",
+      "从非洲的坦桑石矿到斯里兰卡的蓝宝石产地，我们直接从源头采购，为客户提供最优质、最具性价比的选择。"
+    ],
+    "storyEn": [
+      "We are a boutique gemstone shop specializing in rare gems, dedicated to providing collectors and jewelry enthusiasts with the most beautiful and precious natural gemstones in the world.",
+      "Our team consists of senior gemologists and jewelry experts. Every gemstone undergoes rigorous selection and certification to ensure exceptional quality.",
+      "From tanzanite mines in Africa to sapphire sources in Sri Lanka, we source directly from the origin to offer our clients the finest gems at the best value."
+    ],
+    "stats": [
+      { "num": "500+", "labelZh": "精选宝石", "labelEn": "Curated Gems" },
+      { "num": "15+", "labelZh": "年行业经验", "labelEn": "Years Experience" },
+      { "num": "30+", "labelZh": "国家和地区", "labelEn": "Countries & Regions" }
+    ]
+  },
+  "contact": {
+    "email": "contact@gemlovers.com",
+    "phone": "+86 21 6888 8888",
+    "addressZh": "上海市静安区南京西路1266号",
+    "addressEn": "1266 West Nanjing Road, Jing'an District, Shanghai",
+    "wechat": "",
+    "wechatQR": "",
+    "instagram": "",
+    "weibo": ""
+  }
+}
